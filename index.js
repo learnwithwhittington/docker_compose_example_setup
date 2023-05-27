@@ -13,10 +13,10 @@ let mongo_connection, mongo_db;
     mongo_connection = await mongo_client.connect();
     mongo_db = mongo_connection.db('docker_demo');
     let mongo_collection = mongo_db.collection('visits');
-    console.log('mongo connection:', mongo_collection);
+    console.log('mongo collection:', mongo_collection);
     if(mongo_collection)
-        mongo_collection.drop();
-    mongo_db.createCollection('visits');
+        await mongo_collection.drop();
+    await mongo_db.createCollection('visits');
     console.log('mongo db initialized');
 })();
 
