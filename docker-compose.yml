@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  web-server:
+    build: .
+    ports:
+      - "127.0.0.1:3000:3000"
+    command: >
+      sh -c "npm install && \
+             npm start"
+    depends_on:
+      redis-server:
+        condition: service_started
+        restart: true
+      mongo-server:
+        condition: service_started
+        restart: true
+  redis-server:
+    image: 'redis'
+  mongo-server:
+    image: 'mongo'
