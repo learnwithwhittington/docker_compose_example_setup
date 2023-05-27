@@ -12,10 +12,14 @@ let mongo_connection, mongo_db;
 (async () => {
     mongo_connection = await mongo_client.connect();
     mongo_db = mongo_connection.db('docker_demo');
-    let mongo_collection = mongo_db.collection('visits');
-    console.log('mongo collection:', mongo_collection);
-    if(mongo_collection)
-        await mongo_collection.drop();
+
+    // Check if collection exists, deletes if it does
+    const collections = (await mongo_db.listCollections().toArray()).map(c => c.name);
+    if(collections.includes('visits')) {
+        let collection = mongo_db.collection('visits');
+        await collection.drop();
+    }
+
     await mongo_db.createCollection('visits');
     console.log('mongo db initialized');
 })();
